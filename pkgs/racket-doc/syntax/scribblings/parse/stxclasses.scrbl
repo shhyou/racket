@@ -219,7 +219,8 @@ definition or @racket[syntax-parse] expression.
 @defthing[prop:syntax-class (struct-type-property/c (or/c identifier?
                                                           (-> any/c identifier?)))]{
 
-A @tech[#:doc '(lib "scribblings/reference/reference.scrbl")]{structure type property} to identify
+The @racket[prop:syntax-class] @tech[#:doc '(lib "scribblings/reference/reference.scrbl")]{structure type property}
+is provided @racket[for-syntax] by @racketmodname[syntax/parse]. It identifies
 structure types that act as an alias for a @tech{syntax class} or @tech{splicing syntax class}. The
 property value must be an identifier or a procedure of one argument.
 
@@ -233,13 +234,16 @@ it will be applied to the value with the @racket[prop:syntax-class] property to 
 which will then be used as in the former case.
 
 @examples[#:eval the-eval
+(require syntax/parse             (code:comment "for prop:syntax-class")
+         (for-syntax syntax/parse (code:comment "for syntax-parse in prop:procedure")
+                     racket/base))
 (begin-for-syntax
   (struct expr-and-stxclass (expr-id stxclass-id)
     #:property prop:procedure
-    (lambda (this stx) ((set!-transformer-procedure
-                         (make-variable-like-transformer
-                          (expr-and-stxclass-expr-id this)))
-                        stx))
+    (lambda (this stx)
+      (syntax-parse stx
+        [m:id (expr-and-stxclass-expr-id this)]
+        [(m:id arg:expr ...) #'((#%expression m) arg ...)]))
     #:property prop:syntax-class
     (lambda (this) (expr-and-stxclass-stxclass-id this))))
 (define-syntax is-id? (expr-and-stxclass #'identifier? #'id))
