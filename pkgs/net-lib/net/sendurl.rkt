@@ -12,8 +12,7 @@
 
          ;; Reproviding bindings from sendurl/preferences for backwards compatibility
          browser-list external-browser
-         ;; A new config parameter: allowing trampoline or not
-         external-browser-trampoline
+
          ;; Obsolete definitions
          unix-browser-list browser-preference?
          (contract-out

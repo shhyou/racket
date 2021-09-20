@@ -1,5 +1,5 @@
 #lang scribble/doc
-@(require "common.rkt" (for-label net/sendurl racket/file))
+@(require "common.rkt" (for-label net/sendurl))
 
 @title[#:tag "sendurl"]{Send URL: Opening a Web Browser}
 
@@ -80,40 +80,4 @@ above.}
  Passing @racket[#f] means to use the default browser.
 }
 
-@defparam[external-browser cmd browser-preference?]{
-
-A parameter that can hold a procedure to override how a browser is
-started, or @racket[#f] to use the default platform-dependent command.
-
-On Unix, the command that is used depends on the @racket['external-browser]
-preference.  It's recommended not to use this preference, but to rely on
-@tt{xdg-open}.  If the preference is unset, @racket[send-url] uses the first
-of the browsers from @racket[unix-browser-list] for which the executable is
-found.  Otherwise, the preference should hold a symbol indicating a known
-browser (from the @racket[unix-browser-list]), or it a pair of a prefix and
-a suffix string that are concatenated around the @racket[url] string to make
-up a shell command to run.  In addition, the @racket[external-browser]
-paremeter can be set to one of these values, and @racket[send-url] will use
-it instead of the preference value.
-
-Note that the URL is encoded to make it work inside shell double-quotes:
-URLs can still hold characters like @litchar{#}, @litchar{?}, and
-@litchar{&}, so if the @racket[external-browser] is set to a pair of
-prefix/suffix strings, they should use double quotes around the url.
-
-If the preferred or default browser can't be launched,
-@racket[send-url] fails. See @racket[get-preference] and
-@racket[put-preferences] for details on setting preferences.}
-
-@defproc[(browser-preference? [a any/c]) boolean?]{
-
-Returns @racket[#t] if @racket[v] is a valid browser preference,
-@racket[#f] otherwise. See @racket[external-browser] for more
-information.}
-
-@defthing[unix-browser-list (listof symbol?)]{
-
-A list of symbols representing Unix executable names that may be tried
-in order by @racket[send-url]. The @racket[send-url] function
-internally includes information on how to launch each executable with
-a URL.}
+@include-section["sendurl-pref.scrbl"]

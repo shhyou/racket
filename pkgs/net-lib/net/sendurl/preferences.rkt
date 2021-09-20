@@ -17,8 +17,7 @@
 
 (module* internals #f
   (provide existing-browsers->exes
-           custom-browser?
-           browser-preference?))
+           custom-browser?))
 
 (define browser-preference-key 'external-browser)
 (define trampoline-preference-key 'external-browser-trampoline)
@@ -106,7 +105,7 @@
    (lambda (x)
      (unless (or (eq? x 'dont-care)
                  (boolean? x))
-       (raise-argument-error 'external-browser-allow-trampoline
+       (raise-argument-error 'external-browser-trampoline
                              "(or/c #t #f 'dont-care)"
                              x))
      x)))
