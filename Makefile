@@ -57,7 +57,7 @@ VM = cs
 # Makefile parallelism propagated to `raco setup`:
 JOBS =
 # Backward compatibility:
-CPUS =
+CPUS = 1
 # Parallelism from `make -j` with GNU make might also be detected
 
 # Arguments to include in a call to `configure`
@@ -127,7 +127,7 @@ EXTRA_REPOS_BASE =
 
 # Packages (separated by spaces) to link in development mode or
 # to include in a distribution:
-PKGS = main-distribution main-distribution-test
+PKGS = main-distribution disassemble commonmark-lib gregor raco-find-collection racket-langserver rosette gui-easy rhombus-prototype
 
 # Needed for any distribution (not meant to be configured):
 REQUIRED_PKGS = racket-lib
