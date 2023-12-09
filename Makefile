@@ -55,7 +55,7 @@ RUN_ZUO = $(PLUS_MODIFIER) $(ZUO) .
 VM = cs
 
 # Makefile parallelism propagated to `raco setup`:
-JOBS =
+JOBS = 1
 # Backward compatibility:
 CPUS =
 # Parallelism from `make -j` with GNU make might also be detected
@@ -127,7 +127,7 @@ EXTRA_REPOS_BASE =
 
 # Packages (separated by spaces) to link in development mode or
 # to include in a distribution:
-PKGS = main-distribution main-distribution-test
+PKGS = main-distribution disassemble commonmark-lib gregor raco-find-collection racket-langserver rosette gui-easy rhombus-prototype
 
 # Needed for any distribution (not meant to be configured):
 REQUIRED_PKGS = racket-lib
