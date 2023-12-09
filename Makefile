@@ -55,7 +55,7 @@ RUN_ZUO = $(PLUS_MODIFIER) $(ZUO) .
 VM = cs
 
 # Makefile parallelism propagated to `raco setup`:
-JOBS =
+JOBS = 1
 # Backward compatibility:
 CPUS =
 # Parallelism from `make -j` with GNU make might also be detected
@@ -129,7 +129,8 @@ EXTRA_REPOS_BASE =
 # to include in a distribution; if "{}" appears at the start,
 # then the content of "build/PKGS" can override when that file
 # exists:
-PKGS = {} main-distribution main-distribution-test
+PKGS = {} main-distribution disassemble commonmark-lib gregor raco-find-collection racket-langserver rosette gui-easy rhombus-prototype
+=======
 
 # Needed for any distribution (not meant to be configured):
 REQUIRED_PKGS = racket-lib
@@ -138,7 +139,7 @@ REQUIRED_PKGS = racket-lib
 DISTRO_BUILD_PKGS = distro-build-lib
 
 # Options passed along to any `raco pkg update` run:
-PKG_UPDATE_OPTIONS =
+PKG_UPDATE_OPTIONS = --no-trash
 
 # Options passed along to any `raco setup` run:
 PLT_SETUP_OPTIONS =
