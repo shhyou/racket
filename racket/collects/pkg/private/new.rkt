@@ -1,6 +1,7 @@
 #lang racket/base
 
-(provide pkg-new)
+(provide pkg-new
+         make-expand/display)
 
 (require racket/match
          racket/port
@@ -14,8 +15,17 @@
 (define (package-name? package)
   (regexp-match-exact? #rx"[-_a-zA-Z0-9]*" package))
 
-(define (pkg-new name)
+(define (make-expand/display default-table)
+  (define (expand/display str [table default-table])
+    (let ([in (open-input-string str)])
+      (let loop ()
+        (let ([m (regexp-match #rx"<<([^>]*)>>" in 0 #f (current-output-port))])
+          (when m
+            (display (hash-ref table (cadr m)))
+            (loop))))))
+  expand/display)
 
+(define (pkg-new name)
   ;; Useful strings
   (define user
     (string-trim
@@ -40,16 +50,11 @@
         name))
 
   ;; Because I wish I had @-expressions
-  (define (expand/display str [table (hash #"name" name #"user" user
-                                           #"====" ==== #"year" year
-                                           #"sanitized-name"
-                                           sanitized-name)])
-    (let ([in (open-input-string str)])
-      (let loop ()
-        (let ([m (regexp-match #rx"<<([^>]*)>>" in 0 #f (current-output-port))])
-          (when m
-            (display (hash-ref table (cadr m)))
-            (loop))))))
+  (define expand/display
+    (make-expand/display (hash #"name" name #"user" user
+                               #"====" ==== #"year" year
+                               #"sanitized-name"
+                               sanitized-name)))
 
   ;; Initialize the new package
   (cond
