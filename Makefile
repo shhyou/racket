@@ -127,7 +127,7 @@ EXTRA_REPOS_BASE =
 
 # Packages (separated by spaces) to link in development mode or
 # to include in a distribution:
-PKGS = main-distribution disassemble commonmark-lib gregor raco-find-collection racket-langserver rosette gui-easy rhombus-prototype
+PKGS = main-distribution disassemble commonmark-lib gregor raco-find-collection racket-langserver rosette gui-easy rhombus
 
 # Needed for any distribution (not meant to be configured):
 REQUIRED_PKGS = racket-lib
