@@ -129,7 +129,7 @@ EXTRA_REPOS_BASE =
 # to include in a distribution; if "{}" appears at the start,
 # then the content of "build/PKGS" can override when that file
 # exists:
-PKGS = {} main-distribution disassemble commonmark-lib gregor raco-find-collection racket-langserver rosette gui-easy rhombus
+PKGS = {} main-distribution disassemble commonmark-lib gregor raco-find-collection racket-langserver rosette gui-easy rhombus raco-cross
 
 # Needed for any distribution (not meant to be configured):
 REQUIRED_PKGS = racket-lib
