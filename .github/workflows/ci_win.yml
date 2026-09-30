@@ -51,7 +51,7 @@ jobs:
     - name: Install Testing Deps
       shell: cmd
       run: |
-        call racket\raco.exe pkg install --auto --no-docs racket-test unstable-flonum-lib net-test
+        call racket\raco.exe pkg install --auto --no-docs racket-test-core unstable-flonum-lib
     - name: Run tests/racket/test
       shell: cmd
       run: |
