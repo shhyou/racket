@@ -40,8 +40,10 @@
                (fprintf errp "the exit handler is ~s; eq? ~a\n" (exit-handler) (eq? (exit-handler) ehdlr))
                (fprintf errp "\n\n~aTIMEOUT -- ABORTING!\n" Section-prefix)
                (exit 3)
+               (fprintf errp "(exit 3) huh?\n")
                ;; in case the above didn't work for some reason
                (sleep 60)
+               (fprintf errp "(sleep 60) done; go for (custodian-shutdown-all cust)\n")
                (custodian-shutdown-all cust)))))))
 
 (let ([p (make-output-port
