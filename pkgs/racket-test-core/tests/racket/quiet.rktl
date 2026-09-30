@@ -1,4 +1,7 @@
 
+(define ehdlr (exit-handler))
+(printf "the exit handler is ~s\n" ehdlr)
+
 (namespace-variable-value 'quiet-load #f
   (lambda ()
     (namespace-set-variable-value! 'quiet-load
@@ -6,6 +9,9 @@
         (if (positive? (vector-length argv)) (vector->list argv) "all.rktl")))))
 
 (define timeout-thread #f)
+
+
+(printf "the exit handler is ~s; eq? ~a\n" (exit-handler) (eq? (exit-handler) ehdlr))
 
 (namespace-variable-value 'real-output-port #f
   (lambda ()
@@ -31,6 +37,7 @@
             (thread
              (lambda ()
                (sleep 3600)
+               (printf "the exit handler is ~s; eq? ~a\n" (exit-handler) (eq? (exit-handler) ehdlr))
                (fprintf errp "\n\n~aTIMEOUT -- ABORTING!\n" Section-prefix)
                (exit 3)
                ;; in case the above didn't work for some reason

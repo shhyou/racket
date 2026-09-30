@@ -245,6 +245,8 @@
                          (values (peeking-input-port in) out)))
                      thread))
 
+(displayln "PORTLIB 248")
+
 ;; copy-port and make-pipe-with-specials tests
 (let ([s (let loop ([n 10000][l null])
 	   (if (zero? n)
@@ -383,6 +385,8 @@
 
     (void)))
 
+(displayln "PORTLIB 388")
+
 ;; make-input-port/read-to-peek
 (define (make-list-port #:eof-as-special? [eof-as-special? #f] . l)
   (make-input-port/read-to-peek 
@@ -514,6 +518,8 @@
 
   (try-peeking 'none)
   (try-peeking 'block))
+
+(displayln "PORTLIB 522")
 
 (when (run-unreliable-tests? 'timing)
   (define (try get)
@@ -652,6 +658,8 @@
   (test "c" sync (read-line-evt p 'any-one))
   (test eof sync (read-line-evt p 'any-one)))
 
+(displayln "PORTLIB 660")
+
 ;; check that `read-line-evt` works right with a port that is reluctant to give out bytes
 (let* ([pos 0]
        [progress (make-semaphore)]
@@ -738,6 +746,8 @@
           (test (void) sync (system-idle-evt))
           (test t sync/timeout SLEEP-TIME t)
           (test #"123456" values v))))))
+
+(displayln "PORTLIB 749")
 
 ;; make-limited-input-port tests
 (let* ([s (open-input-string "123456789")]
@@ -840,6 +850,8 @@
 
 ;; ----------------------------------------
 ;; Conversion wrappers
+
+(displayln "PORTLIB 854")
 
 (define (try-eip-seq encoding only-if-avail? bytes try-map)
   (when (or (not only-if-avail?)
@@ -958,6 +970,8 @@
 
   (void))
 
+(displayln "PORTLIB 973")
+
 ;; Check buffer modes:
 (let ()
   (define (check-buffering flush-output)
@@ -1041,6 +1055,8 @@
   (close-input-port i))
 
 ;; --------------------------------------------------
+
+(displayln "PORTLIB 1059")
 
 (let ([o (open-output-bytes)])
   (port-count-lines! o)
@@ -1169,6 +1185,8 @@
 
 ;; --------------------------------------------------
 
+(displayln "PORTLIB 1188")
+
 (let-values ([(in out) (make-pipe)])
   (let ([in2 (dup-input-port in #f)]
         [out2 (dup-output-port out #f)])
@@ -1272,7 +1290,9 @@
               (file-position p))
         (list (sync (read-bytes-line-evt p))
               (file-position p))))
-    
+
+(displayln "PORTLIB 1294")
+
 ;; --------------------------------------------------
 
 ;; check that commit-based reading counts against a port limit;
@@ -1348,6 +1368,8 @@
 ;; --------------------------------------------------
 ;; check that `read-bytes-evt' gets
 
+(displayln "PORTLIB 1370")
+
 (for ([i (in-range 100)])
   (for ([thread (in-list thread-procs)])
     (define-values (i o) (make-pipe))
@@ -1369,6 +1391,8 @@
 
     (sync t)
     (test #"23" values res)))
+
+(displayln "PORTLIB 1395")
 
 ;; --------------------------------------------------
 ;; check that string and byte-string evts can be reused
@@ -1474,6 +1498,9 @@
   (test #"abczz" peek-bytes 5 0 pi))
 
 ;; --------------------------------------------------
+
+
+(displayln "PORTLIB 1501")
 
 (when (memq (system-type) '(unix macosx))
   (define open (get-ffi-obj 'open #f (_fun _path _int -> _int)))
