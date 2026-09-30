@@ -38,6 +38,7 @@
              (lambda ()
                (sleep 180)
                (fprintf errp "the exit handler is ~s; eq? ~a\n" (exit-handler) (eq? (exit-handler) ehdlr))
+               (fprintf errp "the real exit i am calling is: ~s, eq? ~a\n" exit (eq? exit ehdlr))
                (fprintf errp "\n\n~aTIMEOUT -- ABORTING!\n" Section-prefix)
                (exit 3)
                (fprintf errp "(exit 3) huh?\n")
