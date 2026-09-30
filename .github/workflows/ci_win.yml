@@ -54,7 +54,7 @@ jobs:
         call racket\raco.exe pkg install --auto --no-docs compiler-lib racket-test-core unstable-flonum-lib
     - name: Run tests/racket/test
       shell: cmd
-      timeout-minutes: 5
+      timeout-minutes: 3
       run: |
         call .\racket\src\worksp\msvcprep.bat x86_amd64
         racket\raco.exe test -l tests/racket/test

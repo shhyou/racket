@@ -36,7 +36,7 @@
       (set! timeout-thread
             (thread
              (lambda ()
-               (sleep 300)
+               (sleep 90)
                (fprintf errp "the exit handler is ~s; eq? ~a\n" (exit-handler) (eq? (exit-handler) ehdlr))
                (fprintf errp "\n\n~aTIMEOUT -- ABORTING!\n" Section-prefix)
                (thread
