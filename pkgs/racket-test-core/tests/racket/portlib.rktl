@@ -245,8 +245,6 @@
                          (values (peeking-input-port in) out)))
                      thread))
 
-(fprintf real-error-port "PORTLIB 248")
-
 ;; copy-port and make-pipe-with-specials tests
 (let ([s (let loop ([n 10000][l null])
 	   (if (zero? n)
@@ -385,8 +383,6 @@
 
     (void)))
 
-(fprintf real-error-port "PORTLIB 388")
-
 ;; make-input-port/read-to-peek
 (define (make-list-port #:eof-as-special? [eof-as-special? #f] . l)
   (make-input-port/read-to-peek 
@@ -518,8 +514,6 @@
 
   (try-peeking 'none)
   (try-peeking 'block))
-
-(fprintf real-error-port "PORTLIB 522")
 
 (when (run-unreliable-tests? 'timing)
   (define (try get)
@@ -658,8 +652,6 @@
   (test "c" sync (read-line-evt p 'any-one))
   (test eof sync (read-line-evt p 'any-one)))
 
-(fprintf real-error-port "PORTLIB 660")
-
 ;; check that `read-line-evt` works right with a port that is reluctant to give out bytes
 (let* ([pos 0]
        [progress (make-semaphore)]
@@ -746,8 +738,6 @@
           (test (void) sync (system-idle-evt))
           (test t sync/timeout SLEEP-TIME t)
           (test #"123456" values v))))))
-
-(fprintf real-error-port "PORTLIB 749")
 
 ;; make-limited-input-port tests
 (let* ([s (open-input-string "123456789")]
@@ -851,7 +841,7 @@
 ;; ----------------------------------------
 ;; Conversion wrappers
 
-(fprintf real-error-port "PORTLIB 854")
+(fprintf real-error-port "PORTLIB 844\n")
 
 (define (try-eip-seq encoding only-if-avail? bytes try-map)
   (when (or (not only-if-avail?)
@@ -970,7 +960,7 @@
 
   (void))
 
-(fprintf real-error-port "PORTLIB 973")
+(fprintf real-error-port "PORTLIB 963\n")
 
 ;; Check buffer modes:
 (let ()
@@ -978,18 +968,18 @@
     (let ([i (open-input-string "abc")]
           [o (open-output-string)])
       (test #f file-stream-buffer-mode i)
-      (test #f file-stream-buffer-mode o)
+      (test #f file-stream-buffer-mode o) (fprintf real-error-port "PORTLIB 971\n")
       (let ([ei (reencode-input-port i "UTF-8")]
             [eo (reencode-output-port o "UTF-8")])
         (test 'none file-stream-buffer-mode ei)
-        (test 'block file-stream-buffer-mode eo)
+        (test 'block file-stream-buffer-mode eo)  (fprintf real-error-port "PORTLIB 975\n")
 
         (test (void) display 10 eo)
         (test (void) display 12 eo)
         (test (void) newline eo)
         (test #"" get-output-bytes o)
         (test (void) flush-output eo)
-        (test #"1012\n" get-output-bytes o)
+        (test #"1012\n" get-output-bytes o)  (fprintf real-error-port "PORTLIB 982\n")
         
         (test (void) file-stream-buffer-mode eo 'line)
         (test 'line file-stream-buffer-mode eo)
@@ -998,7 +988,7 @@
         (test (void) newline eo)
         (test #"1012\n13\n" get-output-bytes o)
         (test (void) flush-output eo)
-        (test #"1012\n13\n" get-output-bytes o)
+        (test #"1012\n13\n" get-output-bytes o)  (fprintf real-error-port "PORTLIB 991\n")
 
         (test (void) display 14 eo)
         (test #"1012\n13\n" get-output-bytes o)
@@ -1006,7 +996,7 @@
         (test #"1012\n13\n14" get-output-bytes o)
         (test 'none file-stream-buffer-mode eo)
         (test (void) display 15 eo)
-        (test #"1012\n13\n1415" get-output-bytes o)
+        (test #"1012\n13\n1415" get-output-bytes o)  (fprintf real-error-port "PORTLIB 999\n")
 
         (test #\a read-char ei)
         (test #\b peek-char i)
@@ -1014,22 +1004,29 @@
         (test 'block file-stream-buffer-mode ei)
         (test #\b read-char ei)
         (test eof peek-char i)
-        (test #\c read-char ei)
+        (test #\c read-char ei)  (fprintf real-error-port "PORTLIB 1007\n")
         (test eof read-char ei))))
   ;; (check-buffering flush-output)
   (let ([p (make-plumber)])
     (parameterize ([current-plumber p])
       (check-buffering (lambda (o) (plumber-flush-all p))))))
 
+(fprintf real-error-port "PORTLIB 1014\n")
+
 (err/rt-test
  (port->bytes (reencode-input-port (open-input-bytes #"\xFF\xFF") "utf-8"))
  (lambda (exn)
    (regexp-match? #rx"^reencode-input-port:" (exn-message exn))))
+
+(fprintf real-error-port "PORTLIB 1021\n")
+
 (err/rt-test
  (let ([o (reencode-output-port (open-output-bytes) "utf-8")])
    (display #"\xFF\xFF" o) (flush-output o))
  (lambda (exn)
    (regexp-match? #rx"^reencode-output-port:" (exn-message exn))))
+
+(fprintf real-error-port "PORTLIB 1029\n")
 
 ;; Check that slow input stream is handled correctly:
 (let ()
@@ -1054,9 +1051,12 @@
   (test #f regexp-match? #px#"temple" i)
   (close-input-port i))
 
+
+
+
 ;; --------------------------------------------------
 
-(fprintf real-error-port "PORTLIB 1059")
+(fprintf real-error-port "PORTLIB 1059\n")
 
 (let ([o (open-output-bytes)])
   (port-count-lines! o)
@@ -1074,6 +1074,9 @@
   (test-values '(1 1 2) (lambda () (port-next-location o)))
   (test-values '(2 2 4) (lambda () (port-next-location o2)))
   (test (file-stream-buffer-mode o) file-stream-buffer-mode o2))
+
+(fprintf real-error-port "PORTLIB 1077\n")
+
 
 (let ([i (open-input-bytes #"x")])
   (port-count-lines! i)
@@ -1113,6 +1116,9 @@
   (test 44 file-position o2)
   (write-bytes (make-bytes 80) o2)
   (test 0 file-position o2))
+
+(fprintf real-error-port "PORTLIB 1119\n")
+
 
 ;; --------------------------------------------------
 ;; test combine-output
@@ -1185,7 +1191,7 @@
 
 ;; --------------------------------------------------
 
-(fprintf real-error-port "PORTLIB 1188")
+(fprintf real-error-port "PORTLIB 1188\n")
 
 (let-values ([(in out) (make-pipe)])
   (let ([in2 (dup-input-port in #f)]
@@ -1291,7 +1297,7 @@
         (list (sync (read-bytes-line-evt p))
               (file-position p))))
 
-(fprintf real-error-port "PORTLIB 1294")
+(fprintf real-error-port "PORTLIB 1294\n")
 
 ;; --------------------------------------------------
 
@@ -1368,7 +1374,7 @@
 ;; --------------------------------------------------
 ;; check that `read-bytes-evt' gets
 
-(fprintf real-error-port "PORTLIB 1370")
+(fprintf real-error-port "PORTLIB 1370\n")
 
 (for ([i (in-range 100)])
   (for ([thread (in-list thread-procs)])
