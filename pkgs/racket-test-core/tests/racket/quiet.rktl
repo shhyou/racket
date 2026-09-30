@@ -36,10 +36,17 @@
       (set! timeout-thread
             (thread
              (lambda ()
-               (sleep 180)
+               (sleep 300)
                (fprintf errp "the exit handler is ~s; eq? ~a\n" (exit-handler) (eq? (exit-handler) ehdlr))
-               (fprintf errp "the real exit i am calling is: ~s, eq? ~a\n" exit (eq? exit ehdlr))
                (fprintf errp "\n\n~aTIMEOUT -- ABORTING!\n" Section-prefix)
+               (thread
+                (lambda ()
+                  (fprintf errp "\n\nstarting a backup timeout thread\n\n")
+                  (sleep 20)
+                  (fprintf errp "\n\nbackup thread slept for 20s; go for custodian-shutdown-all\n\n")
+                  (custodian-shutdown-all cust)))
+               (sleep 1)
+               (fprintf errp "the real exit i am calling is: ~s, eq? ~a\n" exit (eq? exit ehdlr))
                (exit 3)
                (fprintf errp "(exit 3) huh?\n")
                ;; in case the above didn't work for some reason
